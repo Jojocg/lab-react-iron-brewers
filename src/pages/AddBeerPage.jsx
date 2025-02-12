@@ -1,6 +1,11 @@
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function AddBeerPage() {
+
+  const API_POST_URL = "https://ih-beers-api2.herokuapp.com/beers/new";
+
   // State variables to store the values of the form inputs. You can leave these as they are.
   const [name, setName] = useState("");
   const [tagline, setTagline] = useState("");
@@ -21,20 +26,40 @@ function AddBeerPage() {
   const handleAttenuationLevel = (e) => setAttenuationLevel(e.target.value);
   const handleContributedBy = (e) => setContributedBy(e.target.value);
 
-
+  //Para usar el navigate cuando se realice el post request:
+  const navigate = useNavigate();
 
   // TASK:
   // 1. Create a function to handle the form submission and send the form data to the Beers API to create a new beer.
-  // 2. Use axios to make a POST request to the Beers API.
-  // 3. Once the beer is created, navigate the user to the page showing the list of all beers.
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
 
+    const requestBody = { 
+      name, 
+      tagline, 
+      description, 
+      image_url: imageUrl, //aquí como la variable estado (imageUrl) no se llama igual que el nombre de la propiedad (image_url), por eso se ha tenido que especificar de esta manera 
+      first_brewed: firstBrewed,
+      brewers_tips: brewersTips,
+      attenuation_level: attenuationLevel,
+      contributed_by: contributedBy
+    }
 
+    axios
+    .post(`${API_POST_URL}`, requestBody) // 2. Use axios to make a POST request to the Beers API.
+    .then((response) => {
+      /* console.log(response); */
+      navigate("/beers"); // 3. Once the beer is created, navigate the user to the page showing the list of all beers.
+    })
+    .catch((error) => console.log(error));
+  }
+  
 
   // Structure and the content of the page showing the form for adding a new beer. You can leave this as it is.
   return (
     <>
       <div className="d-inline-flex flex-column w-100 p-4">
-        <form>
+        <form onSubmit={handleFormSubmit}>
           <label>Name</label>
           <input
             className="form-control mb-4"
