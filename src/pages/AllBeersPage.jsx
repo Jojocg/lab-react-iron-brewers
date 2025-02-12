@@ -33,9 +33,9 @@ function AllBeersPage() {
 
       <div className="d-inline-flex flex-wrap justify-content-center align-items-center w-100 p-4">
         {beers &&
-          beers.map((beer, i) => {
+          beers.map((beer/* , i */) => {
             return (
-              <div key={beer._id}>
+              <div key={beer._id}> {/* cambié aquí el índice por la id */}
                 <Link to={"/beers/" + beer._id}>
                   <div className="card m-2 p-2 text-center" style={{ width: "24rem", height: "18rem" }}>
                     <div className="card-body">
